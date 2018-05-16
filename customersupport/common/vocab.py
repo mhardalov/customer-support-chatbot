@@ -16,8 +16,9 @@ class VocabHolder:
         self.glove_words = None
         self.glove_weights = None
         self.analyzer = None
+        self.use_glove = hparams.use_glove
         
-        if (hparams.use_glove):
+        if (hparams.glove_path is not None):
             self.glove_words = pd.read_table(hparams.glove_path,
                       sep=" ", index_col=0, header=None, quoting=csv.QUOTE_NONE)
     
