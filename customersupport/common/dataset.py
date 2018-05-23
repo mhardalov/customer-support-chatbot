@@ -127,12 +127,12 @@ class CustomerSupportDataset:
             
         return (train_weights, test_weights)
 
-    def process_utterances(self, masks=None):
+    def process_utterances(self, masks=None, append_context=True,):
         if (self.verbose):
             print("Replacing anonymized screen names in X...")
 
         x_text = self.inbounds_and_outbounds.progress_apply(
-            lambda row: customersupport.common.utils.clean_tweets_text(row['text_x'] + ' ' + row['context']),
+            lambda row: customersupport.common.utils.clean_tweets_text(row['text_x'] + ('' if not append_context else (' ' + row['context']))),
             axis=1)
         
         if (self.verbose):
