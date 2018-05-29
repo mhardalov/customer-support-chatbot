@@ -76,4 +76,4 @@ class VocabHolder:
         try:
             return self.glove_weights[w]
         except:
-            return np.random.normal(.0, 0.1, self.glove_weights.shape[1])
+            return np.random.normal(.0, 0.5, self.glove_weights.shape[1])
