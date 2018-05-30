@@ -17,6 +17,7 @@ class VocabHolder:
         self.glove_weights = None
         self.analyzer = None
         self.use_glove = hparams.use_glove
+        self.unk_count = 0
         
         if (hparams.glove_path is not None):
             self.glove_words = pd.read_table(hparams.glove_path,
@@ -39,7 +40,7 @@ class VocabHolder:
 
             known = list(count_vec_keys.intersection(self.glove_words.index))
             unknown = list(count_vec_keys.difference(known))
-
+            self.unk_count = len(unknown) + 3
             self.vocab = dict(zip(unknown + known, list(range(3, max_vocab))))
             self.glove_weights = self.glove_words.loc[known].as_matrix()
             assert len(self.vocab) == max_vocab - 3
@@ -74,6 +75,6 @@ class VocabHolder:
     def get_glove_weight(self, w):
         #np.zeros(glove_weights.shape[1])
         try:
-            return self.glove_weights[w]
+            return self.glove_weights[w - self.unk_count]
         except:
             return np.random.normal(.0, 0.5, self.glove_weights.shape[1])
