@@ -22,6 +22,12 @@ class VocabHolder:
         if (hparams.glove_path is not None):
             self.glove_words = pd.read_table(hparams.glove_path,
                       sep=" ", index_col=0, header=None, quoting=csv.QUOTE_NONE)
+            print("Loaded glove")
+            
+        import gensim
+        from gensim.models import KeyedVectors
+        self.word_vectors = KeyedVectors.load_word2vec_format('/mnt/storage/Projects/Python/Data/GoogleNews-vectors-negative300.bin', binary=True)  # C binary format
+        print("Loaded w2v")
     
     def fit(self, x_text, y_text, max_vocab, verbose=True):
         count_vec = CountVectorizer(tokenizer=customersupport.common.utils.tweet_tokenize, max_features=max_vocab - 3)
@@ -72,9 +78,16 @@ class VocabHolder:
                                                              truncating='post', 
                                                              value = customersupport.common.utils.PAD)[0]
 
+    # def get_glove_weight(self, w):
+    #     #np.zeros(glove_weights.shape[1])
+    #     try:
+    #         return self.glove_weights[w - self.unk_count]
+    #     except:
+    #         return np.random.normal(.0, 0.5, self.glove_weights.shape[1])
+
     def get_glove_weight(self, w):
         #np.zeros(glove_weights.shape[1])
         try:
-            return self.glove_weights[w - self.unk_count]
+            return self.word_vectors.wv[self.reverse_vocab[w]]
         except:
-            return np.random.normal(.0, 0.5, self.glove_weights.shape[1])
+            return np.random.normal(.0, 0.1, 300)
