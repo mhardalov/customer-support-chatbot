@@ -1,0 +1,3 @@
+[submodule "QANet"]
+	path = QANet
+	url = https://github.com/NLPLearn/QANet.git
