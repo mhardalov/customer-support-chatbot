@@ -26,7 +26,7 @@ class VocabHolder:
             
         import gensim
         from gensim.models import KeyedVectors
-        self.word_vectors = KeyedVectors.load_word2vec_format('/mnt/storage/Projects/Python/Data/GoogleNews-vectors-negative300.bin', binary=True)  # C binary format
+        self.word_vectors = KeyedVectors.load_word2vec_format(hparams.w2v_path, binary=True)  # C binary format
         print("Loaded w2v")
     
     def fit(self, x_text, y_text, max_vocab, verbose=True):
